@@ -272,7 +272,7 @@ export default function Dashboard({ token, logout }) {
         {/* HEADER */}
         <header className="flex flex-col lg:flex-row justify-between items-center mb-8 gap-6">
           <div onClick={goHome} className="cursor-pointer group">
-            <h1 className="text-4xl font-extrabold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent group-hover:scale-105 transition-transform">FusionFeast</h1>
+            <h1 className="text-4xl font-extrabold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent group-hover:scale-105 transition-transform">SaintFeast</h1>
           </div>
           <form onSubmit={handleSearch} className="relative w-full max-w-md">
             <Search className="absolute left-3 top-3 text-gray-400" size={20} />
