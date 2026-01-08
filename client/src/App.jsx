@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Toaster } from 'react-hot-toast'; 
 import Auth from './components/Auth';
 import Dashboard from './components/Dashboard';
+import NotFound from './components/NotFound'; // <--- IMPORT THIS
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
@@ -22,7 +23,10 @@ function App() {
       <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
       <Routes>
         <Route path="/login" element={!token ? <Auth setAuth={setAuth} /> : <Navigate to="/" />} />
-        <Route path="/*" element={token ? <Dashboard token={token} logout={() => setAuth(null)} /> : <Navigate to="/login" />} />
+        <Route path="/" element={token ? <Dashboard token={token} logout={() => setAuth(null)} /> : <Navigate to="/login" />} />
+        
+        {/* CATCH ALL ROUTE (404) */}
+        <Route path="*" element={<NotFound />} /> 
       </Routes>
     </Router>
   );

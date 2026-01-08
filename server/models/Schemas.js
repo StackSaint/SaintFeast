@@ -2,18 +2,22 @@ const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  password: { type: String, required: true }
 });
 
-// Stores a specific meal combination (Base + Protein/Dish) on a specific date
 const MealPlanSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  date: { type: String, required: true }, // Format: YYYY-MM-DD
-  base: { type: String, required: true }, // Rice, Potato, etc.
-  mealId: { type: String, required: true }, // ID from TheMealDB
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  date: { type: String, required: true },
+  base: { type: String, required: true },
+  mealId: { type: String, required: true },
   mealName: { type: String, required: true },
   mealThumb: { type: String },
-  isSavedCombo: { type: Boolean, default: false } // If user wants to "store mix for later"
+  isSavedCombo: { type: Boolean, default: false },
+  // --- NEW NUTRITION FIELDS ---
+  calories: { type: Number, default: 0 },
+  protein: { type: Number, default: 0 },
+  carbs: { type: Number, default: 0 },
+  fat: { type: Number, default: 0 }
 });
 
 const User = mongoose.model('User', UserSchema);
