@@ -428,7 +428,7 @@ export default function Dashboard({ token, logout }) {
                     </p>
                   </div>
 
-                  {/* MODAL FOOTER - ACTIONS (With Youtube Logic) */}
+                  {/* MODAL FOOTER - ACTIONS (Safe Search Video Logic) */}
                   <div className="bg-gray-800 p-4 rounded-xl border border-gray-700 flex flex-col md:flex-row gap-4 items-center justify-between">
                      
                      {/* Date Picker */}
@@ -444,26 +444,14 @@ export default function Dashboard({ token, logout }) {
 
                      {/* Action Buttons */}
                      <div className="flex gap-3 w-full md:w-auto">
-                        {/* YOUTUBE BUTTON (Restored & Upgraded) */}
-                        {selectedMealDetail.strYoutube ? (
-                          <a 
-                            href={selectedMealDetail.strYoutube} 
-                            target="_blank" 
-                            rel="noreferrer" 
-                            className="flex-1 md:flex-none px-4 py-2 bg-red-600/20 text-red-500 border border-red-600/50 rounded-lg font-bold hover:bg-red-600 hover:text-white transition-all text-center text-sm flex items-center justify-center gap-2"
-                          >
-                            Watch Video
-                          </a>
-                        ) : (
-                          <a 
-                            href={`https://www.youtube.com/results?search_query=how+to+cook+${selectedMealDetail.strMeal}`} 
-                            target="_blank" 
-                            rel="noreferrer" 
-                            className="flex-1 md:flex-none px-4 py-2 bg-gray-700/50 text-gray-300 border border-gray-600 rounded-lg font-bold hover:bg-red-600 hover:text-white hover:border-red-600 transition-all text-center text-sm flex items-center justify-center gap-2"
-                          >
-                            Find Recipe
-                          </a>
-                        )}
+                        <a 
+                          href={`https://www.youtube.com/results?search_query=how+to+cook+${selectedMealDetail.strMeal}`} 
+                          target="_blank" 
+                          rel="noreferrer" 
+                          className="flex-1 md:flex-none px-4 py-2 bg-red-600/20 text-red-500 border border-red-600/50 rounded-lg font-bold hover:bg-red-600 hover:text-white transition-all text-center text-sm flex items-center justify-center gap-2"
+                        >
+                          Find Video
+                        </a>
 
                         <button 
                           onClick={(e) => { handleSave(e, selectedMealDetail, false, chosenDate); setSelectedMealDetail(null); }} 
