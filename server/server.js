@@ -159,4 +159,10 @@ app.delete('/api/meals/:id', auth, async (req, res) => {
   } catch (err) { res.status(500).send('Server Error'); }
 });
 
-app.listen(5000, () => console.log('🚀 Server started on port 5000'));
+// Only listen on port 5000 if we are running LOCALLY (not on Vercel)
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(5000, () => console.log('🚀 Server started on port 5000'));
+}
+
+// Export the app for Vercel
+module.exports = app;
