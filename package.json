@@ -1,0 +1,10 @@
+{
+  "name": "fusion-feast-root",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "cd server && npm install && node server.js"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
