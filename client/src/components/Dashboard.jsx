@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getRandomMeal, getMealsByCategory, saveMeal, getMeals, getMealById, deleteMeal, searchFoodNutrition, getFoodNutritionDetails, getMealsByName } from '../api';
-import { Calendar, Plus, LogOut, Utensils, ChefHat, Search, X, Clock, Flame, Trash2, Frown } from 'lucide-react'; // Added Frown icon
+import { Calendar, Plus, LogOut, Utensils, ChefHat, Search, X, Clock, Flame, Trash2, Frown } from 'lucide-react';
 import toast from 'react-hot-toast';
-import Loader from './Loader'; // <--- IMPORT LOADER
+import Loader from './Loader';
 
 const BASES = ['Rice', 'Potato', 'Pasta', 'Bread', 'Salad'];
 const PROTEINS = ['Chicken', 'Beef', 'Seafood', 'Pork', 'Vegetarian'];
@@ -18,7 +18,7 @@ export default function Dashboard({ token, logout }) {
   const [searchResults, setSearchResults] = useState([]); 
   const [savedMeals, setSavedMeals] = useState([]); 
   const [searchQuery, setSearchQuery] = useState(''); 
-  const [isLoading, setIsLoading] = useState(false); // <--- NEW LOADING STATE
+  const [isLoading, setIsLoading] = useState(false);
 
   // Modal & Date State
   const [selectedMealDetail, setSelectedMealDetail] = useState(null); 
@@ -71,13 +71,13 @@ export default function Dashboard({ token, logout }) {
     } catch (err) { console.error(err); }
   };
 
-  // --- ROBUST SEARCH ---
+  // --- ROBUST SEARCH (FatSecret -> Fallback to MealDB) ---
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!searchQuery) return;
     
-    setIsLoading(true); // START LOADING
-    setSearchResults([]); // Clear previous results
+    setIsLoading(true); 
+    setSearchResults([]); 
 
     // 1. Try FATSECRET
     try {
@@ -95,7 +95,7 @@ export default function Dashboard({ token, logout }) {
         }));
         setSearchResults(formattedFoods);
         setView('search');
-        setIsLoading(false); // STOP LOADING
+        setIsLoading(false); 
         return;
       }
     } catch (err) {
@@ -115,8 +115,8 @@ export default function Dashboard({ token, logout }) {
     } catch (err) {
       console.error(err);
     } finally {
-      setIsLoading(false); // ALWAYS STOP LOADING
-      setView('search');   // Ensure we are in search view even if empty
+      setIsLoading(false); 
+      setView('search');   
     }
   };
 
@@ -272,7 +272,7 @@ export default function Dashboard({ token, logout }) {
         {/* HEADER */}
         <header className="flex flex-col lg:flex-row justify-between items-center mb-8 gap-6">
           <div onClick={goHome} className="cursor-pointer group">
-            <h1 className="text-4xl font-extrabold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent group-hover:scale-105 transition-transform">SaintFeast</h1>
+            <h1 className="text-4xl font-extrabold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent group-hover:scale-105 transition-transform">FusionFeast</h1>
           </div>
           <form onSubmit={handleSearch} className="relative w-full max-w-md">
             <Search className="absolute left-3 top-3 text-gray-400" size={20} />
@@ -428,13 +428,49 @@ export default function Dashboard({ token, logout }) {
                     </p>
                   </div>
 
+                  {/* MODAL FOOTER - ACTIONS (With Youtube Logic) */}
                   <div className="bg-gray-800 p-4 rounded-xl border border-gray-700 flex flex-col md:flex-row gap-4 items-center justify-between">
+                     
+                     {/* Date Picker */}
                      <div className="flex flex-col gap-1 w-full md:w-auto">
                         <label className="text-xs text-gray-400 font-bold uppercase tracking-wider">Plan Date</label>
-                        <input type="date" value={chosenDate} onChange={(e) => setChosenDate(e.target.value)} className="bg-gray-900 text-white p-2 rounded border border-gray-600 focus:border-orange-500 focus:outline-none" />
+                        <input 
+                          type="date" 
+                          value={chosenDate} 
+                          onChange={(e) => setChosenDate(e.target.value)} 
+                          className="bg-gray-900 text-white p-2 rounded border border-gray-600 focus:border-orange-500 focus:outline-none" 
+                        />
                      </div>
+
+                     {/* Action Buttons */}
                      <div className="flex gap-3 w-full md:w-auto">
-                        <button onClick={(e) => { handleSave(e, selectedMealDetail, false, chosenDate); setSelectedMealDetail(null); }} className="flex-1 md:flex-none px-6 py-2 bg-green-600 rounded-lg font-bold hover:bg-green-500 transition-colors text-sm shadow-lg shadow-green-900/20">Add to Calendar</button>
+                        {/* YOUTUBE BUTTON (Restored & Upgraded) */}
+                        {selectedMealDetail.strYoutube ? (
+                          <a 
+                            href={selectedMealDetail.strYoutube} 
+                            target="_blank" 
+                            rel="noreferrer" 
+                            className="flex-1 md:flex-none px-4 py-2 bg-red-600/20 text-red-500 border border-red-600/50 rounded-lg font-bold hover:bg-red-600 hover:text-white transition-all text-center text-sm flex items-center justify-center gap-2"
+                          >
+                            Watch Video
+                          </a>
+                        ) : (
+                          <a 
+                            href={`https://www.youtube.com/results?search_query=how+to+cook+${selectedMealDetail.strMeal}`} 
+                            target="_blank" 
+                            rel="noreferrer" 
+                            className="flex-1 md:flex-none px-4 py-2 bg-gray-700/50 text-gray-300 border border-gray-600 rounded-lg font-bold hover:bg-red-600 hover:text-white hover:border-red-600 transition-all text-center text-sm flex items-center justify-center gap-2"
+                          >
+                            Find Recipe
+                          </a>
+                        )}
+
+                        <button 
+                          onClick={(e) => { handleSave(e, selectedMealDetail, false, chosenDate); setSelectedMealDetail(null); }} 
+                          className="flex-1 md:flex-none px-6 py-2 bg-green-600 rounded-lg font-bold hover:bg-green-500 transition-colors text-sm shadow-lg shadow-green-900/20"
+                        >
+                          Add to Calendar
+                        </button>
                      </div>
                   </div>
                 </div>
